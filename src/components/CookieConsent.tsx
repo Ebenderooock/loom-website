@@ -71,7 +71,7 @@ export default function CookieConsent() {
           aria-describedby="cookie-consent-desc"
           className="fixed bottom-4 left-4 right-4 sm:left-auto sm:right-6 sm:bottom-6 z-[120] sm:max-w-sm"
         >
-          <div className="glass glow-purple rounded-2xl border border-brand-purple/20 p-5 shadow-2xl">
+          <div className="glass rounded-2xl border border-brand-purple/20 p-5 shadow-2xl">
             <div className="flex items-start gap-3">
               <div className="feature-icon-wrap mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-brand-purple/10 border border-brand-purple/20">
                 <Cookie size={18} className="text-brand-purple" aria-hidden="true" />
@@ -103,7 +103,7 @@ export default function CookieConsent() {
             <div className="mt-4 flex items-center gap-2.5">
               <button
                 onClick={() => decide('accepted')}
-                className="flex-1 rounded-lg bg-brand-purple px-4 py-2 text-sm font-medium text-white transition-all duration-200 hover:bg-brand-purple/90 hover:shadow-[0_0_24px_rgba(139,92,246,0.4)] focus-visible:ring-2 focus-visible:ring-brand-purple focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-950"
+                className="flex-1 rounded-lg bg-brand-purple px-4 py-2 text-sm font-semibold text-zinc-950 transition-colors duration-200 hover:bg-brand-purple/90 focus-visible:ring-2 focus-visible:ring-brand-purple focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-950"
               >
                 Accept
               </button>
