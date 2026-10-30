@@ -1,144 +1,37 @@
-import { motion, useInView } from 'framer-motion'
-import { useRef } from 'react'
-import {
-  Layers,
-  Search,
-  Download,
-  Monitor,
-  Activity,
-  Cable,
-  ShieldCheck,
-  Bell,
-  HardDrive,
-  RotateCcw,
-  Inbox,
-  Code2,
-  BarChart3,
-  Users,
-} from 'lucide-react'
-import GlowCard from './GlowCard'
+import { Activity, Bell, Cable, Download, FolderSync, HardDrive, Inbox, Layers, ListFilter, Search, ShieldCheck, Users } from 'lucide-react'
 
 const features = [
-  {
-    icon: Layers,
-    title: 'Unified Stack',
-    description: 'Movies, TV shows, and indexers managed in one application. No more context switching between apps.',
-  },
-  {
-    icon: Search,
-    title: '500+ Indexers',
-    description: 'Cardigann YAML engine with Newznab & Torznab support. All your sources, built in from day one.',
-  },
-  {
-    icon: HardDrive,
-    title: 'Built-in Torrent Client',
-    description: 'Zero-dependency torrenting baked right in. No external download client needed — just Loom and your indexers.',
-  },
-  {
-    icon: Download,
-    title: 'External Clients Too',
-    description: 'Prefer your own client? qBittorrent, Transmission, Deluge, rTorrent, SABnzbd, NZBGet all supported.',
-  },
-  {
-    icon: RotateCcw,
-    title: 'Smart Workflows',
-    description: 'Intelligent retry picks up where it left off. Boot reconciliation recovers in-flight imports after restarts.',
-  },
-  {
-    icon: Monitor,
-    title: 'Modern UI',
-    description: 'React 19 + TypeScript. Mobile-first, responsive, fast. A unified interface for your entire library.',
-  },
-  {
-    icon: Activity,
-    title: 'Observable',
-    description: 'OpenTelemetry, Prometheus /metrics, structured JSON logs, and pprof. Debug anything in production.',
-  },
-  {
-    icon: Cable,
-    title: 'Wire-Compatible',
-    description: 'Overseerr, Jellyseerr, Bazarr, Notifiarr, Tautulli, Plex, Jellyfin, Emby all keep working.',
-  },
-  {
-    icon: ShieldCheck,
-    title: 'Download Safety',
-    description: 'Post-download settling, seed ratio enforcement, file renaming, and collision detection before import.',
-  },
-  {
-    icon: Bell,
-    title: 'Notifications',
-    description: 'Discord, Webhook, Gotify, Ntfy. Get notified about grabs, downloads, and health checks.',
-  },
-  {
-    icon: Inbox,
-    title: 'Media Requests',
-    description: 'A built-in request portal plus Discord & Telegram bots. Users request, admins approve, Loom grabs — with per-user quotas.',
-  },
-  {
-    icon: Users,
-    title: 'Multi-User',
-    description: 'Admin and user roles, self-service invite links, and a request/approval workflow for friends and family.',
-  },
-  {
-    icon: BarChart3,
-    title: 'Media Analytics',
-    description: 'Tautulli-style insight into Plex, Jellyfin & Emby — active streams, watch history, bandwidth and transcode stats.',
-  },
-  {
-    icon: Code2,
-    title: 'Plugin Engine',
-    description: 'JavaScript plugins with an in-browser Monaco editor. Hook into grabs, imports, downloads, and notifications.',
-  },
+  { icon: Layers, title: 'A connected library', description: 'Manage movies and TV, metadata, seasons, and episodes in one interface. Music includes artist, album, and track management and acquisition.' },
+  { icon: Search, title: 'Your sources, together', description: '500+ bundled Cardigann indexer definitions, Newznab and Torznab, aggregated search, release scoring, and per-indexer diagnostics.' },
+  { icon: ListFilter, title: 'Choose what qualifies', description: 'Quality profiles, custom formats, language preferences, and upgrade thresholds guide what Loom searches for and grabs.' },
+  { icon: HardDrive, title: 'Torrent workflows', description: 'Built-in torrent workflow integration uses a Rain sidecar. Torrent detail views and per-indexer seed-ratio overrides remain polish work.' },
+  { icon: Download, title: 'Bring your download client', description: 'Connect qBittorrent, Transmission, Deluge, rTorrent, SABnzbd, or NZBGet. A built-in Usenet client is a deferred proposal.' },
+  { icon: FolderSync, title: 'Search through import', description: 'Track search, grab, download, post-processing, and import. Rename files, move or hardlink them, and recover interrupted workflows.' },
+  { icon: ShieldCheck, title: 'Review before import', description: 'Release validation, suspicious-file checks, collision handling, and a manual review queue help keep imports under your control.' },
+  { icon: Inbox, title: 'Requests with boundaries', description: 'Authenticated requests, per-user quotas, admin approval, and Discord/Telegram request bots exist. Expanded request features remain on the roadmap.' },
+  { icon: Users, title: 'Connect your ecosystem', description: 'Plex, Jellyfin, Emby, and Trakt connections support library and watch-status workflows. Broader media-server analytics remain in development.' },
+  { icon: Cable, title: 'A path from the *arr stack', description: 'Radarr, Sonarr, and Prowlarr compatibility shims and database migration importers provide a path across. Check the API docs for your integration.' },
+  { icon: Bell, title: 'Keep up without checking in', description: 'RSS and import lists, scheduled missing-media searches, and notifications through Discord, webhooks, Gotify, Ntfy, and other channels.' },
+  { icon: Activity, title: 'See what your server is doing', description: 'Health probes, structured JSON logs, Prometheus metrics, OpenTelemetry tracing, and configurable pprof profiling are part of the platform.' },
 ]
 
 export default function Features() {
-  const ref = useRef(null)
-  const isInView = useInView(ref, { once: true, margin: '-50px' })
-
   return (
-    <section id="features" className="relative py-24 sm:py-32">
-      {/* Background accent */}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-brand-purple/[0.02] to-transparent" />
-
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <motion.div
-          ref={ref}
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.7 }}
-          className="text-center mb-16"
-        >
-          <h2 className="text-3xl sm:text-4xl font-bold mb-4">
-            Built for <span className="text-gradient">Power Users</span>
-          </h2>
-          <p className="text-zinc-400 text-lg max-w-2xl mx-auto">
-            Everything you need for media automation, unified and enhanced.
-          </p>
-        </motion.div>
-
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
-          {features.map((feature, i) => {
-            const row = Math.floor(i / 4)
-            const col = i % 4
-            const staggerDelay = 0.1 + (row + col) * 0.12
-            return (
-              <motion.div
-                key={feature.title}
-                initial={{ opacity: 0, y: 30 }}
-                animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.5, delay: staggerDelay }}
-              >
-                <GlowCard className="h-full">
-                  <div className="feature-icon-wrap inline-block mb-3">
-                    <feature.icon size={22} className="text-brand-purple group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-brand-purple group-hover:to-brand-blue group-hover:bg-clip-text transition-colors duration-300" />
-                  </div>
-                  <h3 className="text-base font-semibold text-white mb-2">{feature.title}</h3>
-                  <p className="text-sm text-zinc-400 leading-relaxed">{feature.description}</p>
-                </GlowCard>
-              </motion.div>
-            )
-          })}
+    <section id="features" className="section-space">
+      <div className="page-shell">
+        <div className="section-heading split-heading">
+          <div><span className="eyebrow">Inside the platform</span><h2>Less app switching.<br /><em>More library.</em></h2></div>
+          <p>From finding a release to putting it in the right folder, keep the moving parts in view. Available capabilities are still pre-release; not every planned vertical is complete.</p>
         </div>
+        <div className="feature-grid">
+          {features.map((feature) => (
+            <article key={feature.title} className="feature-card">
+              <feature.icon size={21} strokeWidth={1.5} aria-hidden="true" />
+              <h3>{feature.title}</h3><p>{feature.description}</p>
+            </article>
+          ))}
+        </div>
+        <a className="text-link section-source" href="https://github.com/Ebenderooock/loom/blob/main/docs/platform-documentation.md">Explore the capability reference <span aria-hidden="true">↗</span></a>
       </div>
     </section>
   )
