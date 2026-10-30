@@ -1,22 +1,6 @@
-import { useState } from 'react'
-import { ArrowDown, ArrowRight, BookOpen, Check, Film, Search, Tv } from 'lucide-react'
-
-const collections = {
-  Movies: [
-    { title: 'The Quiet Orbit', detail: 'Science fiction', style: 'orbit' },
-    { title: 'After the Rain', detail: 'Drama', style: 'rain' },
-    { title: 'Field Notes', detail: 'Documentary', style: 'field' },
-  ],
-  Series: [
-    { title: 'Outer Signals', detail: 'Season 01', style: 'orbit' },
-    { title: 'Night Service', detail: 'Season 02', style: 'rain' },
-    { title: 'Wild Country', detail: 'Season 01', style: 'field' },
-  ],
-}
+import { ArrowDown, ArrowRight, BookOpen } from 'lucide-react'
 
 export default function Hero() {
-  const [collection, setCollection] = useState<keyof typeof collections>('Movies')
-
   return (
     <section className="hero-section" aria-labelledby="hero-title">
       <div className="page-shell">
@@ -43,40 +27,10 @@ export default function Hero() {
           </div>
 
           <figure className="library-preview">
-            <div className="preview-toolbar">
-              <span className="preview-brand"><img src="/loom-logo.png" alt="" /> loom <span>/ library</span></span>
-              <span className="preview-local">SELF-HOSTED</span>
-            </div>
-            <div className="preview-heading">
-              <div><span className="eyebrow">A place for everything</span><h2>The collection</h2></div>
-              <div className="preview-switch" aria-label="Illustrated collection">
-                {(['Movies', 'Series'] as const).map((name) => (
-                  <button key={name} aria-pressed={collection === name} onClick={() => setCollection(name)}>
-                    {name === 'Movies' ? <Film size={14} /> : <Tv size={14} />}{name}
-                  </button>
-                ))}
-              </div>
-            </div>
-            <div className="poster-grid">
-              {collections[collection].map((item) => (
-                <div key={item.title} className="preview-item">
-                  <div className={`poster poster-${item.style}`} aria-hidden="true">
-                    <span className="poster-mark">LOOM COLLECTION</span>
-                    <strong>{item.title}</strong>
-                  </div>
-                  <h3>{item.title}</h3><p>{item.detail}</p>
-                </div>
-              ))}
-            </div>
-            <div className="workflow-preview">
-              <div className="workflow-label"><Search size={14} /><span>From discovery to your library</span></div>
-              <ol className="workflow-steps">
-                {['Search', 'Grab', 'Download', 'Import'].map((step) => (
-                  <li key={step}><Check size={12} /><span>{step}</span></li>
-                ))}
-              </ol>
-            </div>
-            <figcaption>Interactive workflow illustration. Sample titles, not a product screenshot.</figcaption>
+            <a className="product-capture-link" href="/loom-movies.png" target="_blank" rel="noopener noreferrer" aria-label="Open full-size screenshot of Loom’s Movies view">
+              <img className="product-capture" src="/loom-movies.png" width={1440} height={900} fetchPriority="high" alt="Loom’s real Movies view, with the application header, navigation sidebar, search and quality filters, and a poster grid showing available, missing, and unreleased titles." />
+            </a>
+            <figcaption>Actual Loom Movies view · pre-release UI. <a href="/loom-movies.png" target="_blank" rel="noopener noreferrer">View full size <span aria-hidden="true">↗</span></a></figcaption>
           </figure>
         </div>
         <div className="hero-bottomline">

@@ -8,9 +8,13 @@ Cloudflare Workers (static assets).
 
 ## Content and design
 
-The dark library visual uses original CSS poster artwork and an interactive
-workflow illustration, explicitly labelled as sample content rather than a
-product screenshot. No external fonts or image services are required.
+The hero uses a real, owner-approved capture of Loom's Movies view, not a
+reconstructed interface. `public/loom-movies.png` was captured on 2026-10-30
+with the application header and navigation sidebar included at the owner's
+request. Browser chrome and the instance address are excluded. The caption
+identifies it as pre-release UI. Future captures
+must be checked for private information and approved before publication.
+No external fonts or image services are required.
 
 Product copy follows the Loom [README](https://github.com/Ebenderooock/loom#readme),
 [platform reference](https://github.com/Ebenderooock/loom/blob/main/docs/platform-documentation.md),
