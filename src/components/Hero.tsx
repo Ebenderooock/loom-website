@@ -1,8 +1,10 @@
 import { ArrowDown, ArrowRight, BookOpen } from 'lucide-react'
+import HeroBackground from './HeroBackground'
 
 export default function Hero() {
   return (
     <section className="hero-section" aria-labelledby="hero-title">
+      <HeroBackground />
       <div className="page-shell">
         <div className="hero-topline">
           <span className="eyebrow">Self-hosted media automation</span>
@@ -14,8 +16,8 @@ export default function Hero() {
           <div className="hero-copy">
             <h1 id="hero-title">Your library.<br /><em>Woven together.</em></h1>
             <p className="hero-description">
-              Movies, TV, indexers, and downloads. Loom brings the media automation
-              stack into one place, on your own server.
+              Movies, TV, indexers, and downloads, managed together in one
+              self-hosted app on your own server.
             </p>
             <div className="hero-actions">
               <a href="#getting-started" className="button-primary">Run Loom <ArrowRight size={17} /></a>
