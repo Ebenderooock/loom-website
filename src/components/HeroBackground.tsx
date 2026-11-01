@@ -147,7 +147,10 @@ export default function HeroBackground() {
     <>
       <div className="hero-background" aria-hidden="true">
         <div className="hero-background-media" ref={mediaRef}>
-          <img src="/media/tears-of-steel-poster.webp" alt="" width={960} height={400} />
+          <picture>
+            <source type="image/avif" srcSet="/media/tears-of-steel-poster-480.avif 480w, /media/tears-of-steel-poster-960.avif 960w" sizes="100vw" />
+            <img src="/media/tears-of-steel-poster.webp" srcSet="/media/tears-of-steel-poster-480.webp 480w, /media/tears-of-steel-poster.webp 960w" sizes="100vw" alt="" width={960} height={400} fetchPriority="high" />
+          </picture>
           {eligible && !failed && [0, 1].map(slot => (
             <video
               key={slot}

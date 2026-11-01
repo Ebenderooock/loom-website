@@ -1,6 +1,8 @@
 import { ArrowDown, ArrowRight, BookOpen } from 'lucide-react'
 import HeroBackground from './HeroBackground'
 
+const screenshotSizes = '(max-width: 800px) min(600px, calc(100vw - 40px)), (max-width: 1080px) 52vw, 640px'
+
 export default function Hero() {
   return (
     <section className="hero-section" aria-labelledby="hero-title">
@@ -30,10 +32,13 @@ export default function Hero() {
           </div>
 
           <figure className="library-preview">
-            <a className="product-capture-link" href="/loom-movies.png" target="_blank" rel="noopener noreferrer" aria-label="Open full-size screenshot of Loom’s Movies view">
-              <img className="product-capture" src="/loom-movies.png" width={1440} height={900} fetchPriority="high" alt="Loom’s real Movies view, with the application header, navigation sidebar, search and quality filters, and a poster grid showing available, missing, and unreleased titles." />
+            <a className="product-capture-link" href="/loom-movies-1440.webp" target="_blank" rel="noopener noreferrer" aria-label="Open full-size screenshot of Loom’s Movies view">
+              <picture>
+                <source type="image/avif" srcSet="/loom-movies-640.avif 640w, /loom-movies-960.avif 960w, /loom-movies-1440.avif 1440w" sizes={screenshotSizes} />
+                <img className="product-capture" src="/loom-movies-960.webp" srcSet="/loom-movies-640.webp 640w, /loom-movies-960.webp 960w, /loom-movies-1440.webp 1440w" sizes={screenshotSizes} width={1440} height={900} decoding="async" alt="Loom’s real Movies view, with the application header, navigation sidebar, search and quality filters, and a poster grid showing available, missing, and unreleased titles." />
+              </picture>
             </a>
-            <figcaption>Actual Loom Movies view · pre-release UI. <a href="/loom-movies.png" target="_blank" rel="noopener noreferrer">View full size <span aria-hidden="true">↗</span></a></figcaption>
+            <figcaption>Actual Loom Movies view · pre-release UI. <a href="/loom-movies-1440.webp" target="_blank" rel="noopener noreferrer">View full size <span aria-hidden="true">↗</span></a></figcaption>
           </figure>
         </div>
         <div className="hero-bottomline">
