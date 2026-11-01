@@ -100,6 +100,61 @@ npm run build    # type-check + production build to dist/
 npm run preview  # preview the production build
 ```
 
+## Search discovery and initial HTML
+
+`npm run build` renders the same React page into `dist/index.html` using
+React's server renderer and a temporary Vite SSR bundle. The bundle is removed
+after rendering; deployment is still static assets only, with no runtime server
+or additional dependencies. Production hydrates this markup; the Vite dev
+server uses client rendering. Keep render-time code safe without browser APIs,
+and ensure the first client render matches the server snapshot. The consent
+dialog reads browser storage after hydration; hero-video eligibility already
+uses a static server snapshot. Page content, installation instructions,
+screenshot and film attribution are visible without JavaScript.
+
+The canonical origin is **https://loom.deroock.co.za**, verified against the
+live HTTPS site on 2026-11-02. The custom domain is configured in Cloudflare,
+not declared in `wrangler.jsonc`; retain its existing mapping. `index.html`
+contains the title, description, canonical, Open Graph / Twitter metadata
+and JSON-LD (`WebSite`, `WebPage`, `SoftwareSourceCode`). Sharing uses the
+actual owner-approved screenshot, not a fabricated product image.
+`public/robots.txt` permits crawling and references `public/sitemap.xml`,
+which lists only the canonical home page. There are no extra landing routes.
+Unknown paths return 404 instead of duplicate home-page HTML.
+
+When changing the domain, update the canonical, social URLs and JSON-LD in
+`index.html` plus both crawler assets together. After building, inspect the
+HTML source (not just the live DOM) for meaningful content and parse the
+JSON-LD and sitemap. Preview with JavaScript both enabled and disabled;
+check local anchors, assets, hydration, installation controls and responsive
+navigation. The source template intentionally has an empty root; only the
+production build is prerendered. Deploy `dist/`, never the source template.
+
+Copy targets Loom media management and download automation, not competitive
+replacement of the *arr ecosystem. Compatibility shims are described with
+integration caveats. Movie torrents are discussed only in the context of
+permission, openly licensed/public-domain media and local law. Keep
+pre-release limitations visible; do not add invented ratings, usage figures,
+verification tokens or stable-release claims.
+
+### Owner actions after deployment
+
+1. Verify ownership of `loom.deroock.co.za` in Google Search Console using its
+   supplied DNS TXT record in Cloudflare (or use an already verified property).
+   This requires the owner's Google and DNS access; no token is bundled here.
+2. Submit `https://loom.deroock.co.za/sitemap.xml`. Use URL Inspection on
+   `https://loom.deroock.co.za/`, check the rendered/crawled page and request
+   indexing. Confirm production `/robots.txt` and `/sitemap.xml` serve the
+   actual files and nonexistent paths return 404.
+3. Monitor indexing, queries and canonical selection. For Bing, verify the
+   site in Bing Webmaster Tools (or import the verified Search Console
+   property) and submit the same sitemap.
+
+These changes improve crawlability and relevance, not guaranteed rankings.
+Broad “Loom” searches compete with the established video-messaging brand;
+focused self-hosted media queries are more realistic. Ranking also depends on
+indexing, useful ongoing documentation, legitimate links and search demand.
+
 ## Deploy
 
 Deployment is automated: every push to `main` runs

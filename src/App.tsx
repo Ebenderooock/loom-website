@@ -3,6 +3,7 @@ import Hero from './components/Hero'
 import WhatIsLoom from './components/WhatIsLoom'
 import Features from './components/Features'
 import Architecture from './components/Architecture'
+import MediaManagement from './components/MediaManagement'
 import GettingStarted from './components/GettingStarted'
 import Roadmap from './components/Roadmap'
 import Community from './components/Community'
@@ -19,6 +20,7 @@ export default function App() {
         <WhatIsLoom />
         <Features />
         <Architecture />
+        <MediaManagement />
         <GettingStarted />
         <Roadmap />
         <Community />

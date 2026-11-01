@@ -20,7 +20,7 @@ export default function Features() {
     <section id="features" className="section-space">
       <div className="page-shell">
         <div className="section-heading split-heading">
-          <div><span className="eyebrow">Inside the platform</span><h2>Less app switching.<br /><em>More library.</em></h2></div>
+          <div><span className="eyebrow">Inside the platform</span><h2>Your media workflows.<br /><em>Connected.</em></h2></div>
           <p>From finding a release to putting it in the right folder, keep the moving parts in view. Available capabilities are still pre-release; not every planned vertical is complete.</p>
         </div>
         <div className="feature-grid">

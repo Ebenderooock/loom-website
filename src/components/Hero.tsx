@@ -7,17 +7,18 @@ export default function Hero() {
       <HeroBackground />
       <div className="page-shell">
         <div className="hero-topline">
-          <span className="eyebrow">Self-hosted media automation</span>
+          <span className="eyebrow">Loom media manager · Self-hosted automation</span>
           <a href="https://github.com/Ebenderooock/loom/releases" className="release-badge">
             <span aria-hidden="true" /> Pre-release — Actively Developing <ArrowRight size={13} />
           </a>
         </div>
         <div className="hero-layout">
           <div className="hero-copy">
-            <h1 id="hero-title">Your library.<br /><em>Woven together.</em></h1>
+            <h1 id="hero-title">Loom. Your library.<br /><em>Woven together.</em></h1>
             <p className="hero-description">
-              Movies, TV, indexers, and downloads, managed together in one
-              self-hosted app on your own server.
+              Self-hosted media management for movies, TV, indexers, and
+              media downloads. Loom keeps your library and automation
+              together on your own server.
             </p>
             <div className="hero-actions">
               <a href="#getting-started" className="button-primary">Run Loom <ArrowRight size={17} /></a>
