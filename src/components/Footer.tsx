@@ -7,6 +7,7 @@ export default function Footer() {
         <div className="footer-layout">
           <a className="footer-brand" href="#" aria-label="Loom home"><img src="/loom-logo.png" alt="" />loom<span>Unified media automation</span></a>
           <div className="footer-links">
+            <a href="#media-management">Media management</a>
             <a href="https://github.com/Ebenderooock/loom/tree/main/docs">Documentation</a>
             <a href="https://github.com/Ebenderooock/loom">GitHub</a>
             <a href="https://github.com/Ebenderooock/loom/blob/main/LICENSE">AGPL-3.0</a>
@@ -14,7 +15,7 @@ export default function Footer() {
           </div>
         </div>
         <p className="footer-note">Not a fork. Built from scratch. Pre-release, actively developing.</p>
-        <div className="media-credit">
+        <div id="film-credits" className="media-credit">
           <p>Background films: trimmed, muted, resized, cropped and compressed; posters extracted. No endorsement implied.</p>
           {backgroundClips.map(film => (
             <p key={film.id}>

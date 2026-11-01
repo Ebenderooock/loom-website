@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useSyncExternalStore } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Cookie, X } from 'lucide-react'
 
@@ -39,8 +39,16 @@ function readStoredChoice(): Choice | null {
   return null
 }
 
+function subscribe(onChange: () => void) {
+  window.addEventListener('storage', onChange)
+  return () => window.removeEventListener('storage', onChange)
+}
+
 export default function CookieConsent() {
-  const [choice, setChoice] = useState<Choice | null>(readStoredChoice)
+  // Storage is browser-only; omit the dialog until after hydration.
+  const storedChoice = useSyncExternalStore(subscribe, readStoredChoice, () => undefined)
+  const [decision, setDecision] = useState<Choice | null>(null)
+  const choice = decision ?? storedChoice
 
   useEffect(() => {
     if (choice) applyZarazConsent(choice === 'accepted')
@@ -52,7 +60,7 @@ export default function CookieConsent() {
     } catch {
       /* ignore persistence failure */
     }
-    setChoice(next)
+    setDecision(next)
   }
 
   const visible = choice === null
