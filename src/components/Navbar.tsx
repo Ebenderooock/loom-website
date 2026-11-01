@@ -3,7 +3,6 @@ import { ArrowUpRight, Menu, X } from 'lucide-react'
 
 const navLinks = [
   { label: 'Platform', href: '#features' },
-  { label: 'Why Loom', href: '#why-loom' },
   { label: 'Quickstart', href: '#getting-started' },
   { label: 'Roadmap', href: '#roadmap' },
   { label: 'Docs', href: 'https://github.com/Ebenderooock/loom/tree/main/docs' },

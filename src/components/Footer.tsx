@@ -1,3 +1,5 @@
+import { backgroundClips } from './backgroundClips'
+
 export default function Footer() {
   return (
     <footer className="site-footer">
@@ -11,7 +13,16 @@ export default function Footer() {
             <a href="https://github.com/Ebenderooock/loom/discussions">Discussions</a>
           </div>
         </div>
-        <p className="footer-note">Not a fork. A clean-room reimplementation. Pre-release, actively developing.</p>
+        <p className="footer-note">Not a fork. Built from scratch. Pre-release, actively developing.</p>
+        <div className="media-credit">
+          <p>Background films: trimmed, muted, resized, cropped and compressed; posters extracted. No endorsement implied.</p>
+          {backgroundClips.map(film => (
+            <p key={film.id}>
+              <a href={film.website}>{film.title} — {film.attribution}</a>
+              {' · '}<a href={`https://creativecommons.org/licenses/by/${film.license}/`}>CC BY {film.license}</a>
+            </p>
+          ))}
+        </div>
       </div>
     </footer>
   )

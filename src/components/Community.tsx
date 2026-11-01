@@ -11,7 +11,7 @@ export default function Community() {
   return (
     <section className="section-space community-section">
       <div className="page-shell">
-        <div className="section-heading"><span className="eyebrow">Open source, shared direction</span><h2>A better stack is<br /><em>a community effort.</em></h2><p>Built from scratch, with respect for the *arr ecosystem and the people who make self-hosting possible.</p></div>
+        <div className="section-heading"><span className="eyebrow">Open source, shared direction</span><h2>Open source is<br /><em>a community effort.</em></h2><p>Built from scratch, with respect for the *arr ecosystem and the people who make self-hosting possible.</p></div>
         <div className="community-grid">{links.map((link) => (
           <a key={link.title} href={link.href} className="community-card"><link.icon size={23} aria-hidden="true" /><h3>{link.title}</h3><p>{link.description}</p><span>{link.cta}<ArrowUpRight size={16} /></span></a>
         ))}</div>

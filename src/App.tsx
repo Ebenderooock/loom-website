@@ -2,7 +2,6 @@ import Navbar from './components/Navbar'
 import Hero from './components/Hero'
 import WhatIsLoom from './components/WhatIsLoom'
 import Features from './components/Features'
-import WhyLoom from './components/WhyLoom'
 import Architecture from './components/Architecture'
 import GettingStarted from './components/GettingStarted'
 import Roadmap from './components/Roadmap'
@@ -19,7 +18,6 @@ export default function App() {
         <Hero />
         <WhatIsLoom />
         <Features />
-        <WhyLoom />
         <Architecture />
         <GettingStarted />
         <Roadmap />

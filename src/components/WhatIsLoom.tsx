@@ -1,7 +1,7 @@
 import { Box, Database, Layout } from 'lucide-react'
 
 const highlights = [
-  { icon: Box, title: 'One binary', description: 'A Go application built from scratch, not a fork. A unified home for media automation instead of separate core services.' },
+  { icon: Box, title: 'One binary', description: 'A Go application built from scratch, not a fork. Movies, TV, indexers, and downloads in one application.' },
   { icon: Database, title: 'One database', description: 'SQLite by default, with PostgreSQL support. Keep the platform’s configuration and library in one place.' },
   { icon: Layout, title: 'One interface', description: 'A responsive React interface for your library, indexers, search, downloads, workflows, and settings.' },
 ]

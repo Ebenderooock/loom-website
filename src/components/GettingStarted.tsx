@@ -46,7 +46,7 @@ export default function GettingStarted() {
           <span className="eyebrow"><Terminal size={15} /> On your own terms</span>
           <h2>Make room<br /><em>for Loom.</em></h2>
           <p>Run a container or build from source. Adjust the configuration and media paths for your server before starting.</p>
-          <p className="quickstart-warning">Pre-release software. Back up existing data before testing or migrating; APIs and database schemas may change.</p>
+          <p className="quickstart-warning">Pre-release software. Back up existing data before testing; APIs and database schemas may change.</p>
           <a className="text-link" href="https://github.com/Ebenderooock/loom/blob/main/docs/deployment.md">Deployment guide <ArrowUpRight size={16} /></a>
         </div>
         <div className="install-panel">

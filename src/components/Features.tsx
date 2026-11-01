@@ -10,7 +10,7 @@ const features = [
   { icon: ShieldCheck, title: 'Review before import', description: 'Release validation, suspicious-file checks, collision handling, and a manual review queue help keep imports under your control.' },
   { icon: Inbox, title: 'Requests with boundaries', description: 'Authenticated requests, per-user quotas, admin approval, and Discord/Telegram request bots exist. Expanded request features remain on the roadmap.' },
   { icon: Users, title: 'Connect your ecosystem', description: 'Plex, Jellyfin, Emby, and Trakt connections support library and watch-status workflows. Broader media-server analytics remain in development.' },
-  { icon: Cable, title: 'A path from the *arr stack', description: 'Radarr, Sonarr, and Prowlarr compatibility shims and database migration importers provide a path across. Check the API docs for your integration.' },
+  { icon: Cable, title: 'Works with your existing tools', description: 'Compatibility shims for the Radarr v3, Sonarr v3/v4, and Prowlarr v1 APIs let clients such as Overseerr, Jellyseerr, Bazarr, and Notifiarr talk to Loom. Check the API docs for your integration.' },
   { icon: Bell, title: 'Keep up without checking in', description: 'RSS and import lists, scheduled missing-media searches, and notifications through Discord, webhooks, Gotify, Ntfy, and other channels.' },
   { icon: Activity, title: 'See what your server is doing', description: 'Health probes, structured JSON logs, Prometheus metrics, OpenTelemetry tracing, and configurable pprof profiling are part of the platform.' },
 ]
