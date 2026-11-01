@@ -94,6 +94,7 @@ html { scroll-behavior: smooth; scroll-padding-top: 100px; }
 .library-preview { background: #171b2a; border: 1px solid #3c4056; border-radius: 8px; overflow: hidden; box-shadow: 0 24px 60px #00000030; }
 .product-capture-link { display: block; }
 .product-capture-link:focus-visible { outline-offset: -3px; }
+.product-capture-link picture { display: block; }
 .product-capture { display: block; width: 100%; height: auto; }
 .library-preview figcaption { font-size: 11px; line-height: 1.7; color: #b5bbce; padding: 12px 16px; border-top: 1px solid #34384c; }
 .library-preview figcaption a { color: var(--lavender); text-decoration: underline; white-space: nowrap; }

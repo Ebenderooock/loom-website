@@ -9,11 +9,26 @@ Cloudflare Workers (static assets).
 ## Content and design
 
 The hero uses a real, owner-approved capture of Loom's Movies view, not a
-reconstructed interface. `public/loom-movies.png` was captured on 2026-10-30
+reconstructed interface. The `public/loom-movies-*` images were captured on 2026-10-30
 with the application header and navigation sidebar included at the owner's
 request. Browser chrome and the instance address are excluded. The caption
 identifies it as pre-release UI. Future captures
 must be checked for private information and approved before publication.
+
+### Image delivery
+
+Images are served at their displayed size in modern formats; regenerate all
+variants whenever a source changes:
+
+- Screenshot: AVIF (quality 55) and WebP (quality 78) at 640, 960 and 1440 px
+  wide, chosen with `srcset`/`sizes`. `loom-movies.jpg` (1440 × 900, quality 82)
+  is the social-preview and structured-data image.
+- Logo: 64 and 128 px WebP for the header/footer, `favicon-48.png`,
+  `apple-touch-icon.png` (180 px) and a palette-compressed 500 px
+  `loom-logo.png` master.
+- Hero poster: Tears of Steel AVIF at 480/960 px and WebP at 480/960 px; it is
+  the LCP image, so it carries `fetchpriority="high"`. The screenshot is not
+  high priority.
 No external fonts or image services are required.
 
 ### Background films and attribution
@@ -47,16 +62,16 @@ files are retained in the repository.
 
 Every MP4 is H.264, 960 × 400, 24 fps, 10 seconds, no audio, with fast-start.
 New encodes use CRF 30 and a 400 kbps maximum video rate / 800 kb buffer;
-posters are 960 × 400 WebP at quality 70.
+posters are 960 × 400 WebP at quality 62.
 
 | Asset stem in `public/media/` | `-ambient.mp4` bytes | `-poster.webp` bytes |
 |---|---:|---:|
-| `tears-of-steel` | 401,566 | 28,946 |
-| `big-buck-bunny` | 252,020 | 36,334 |
-| `sintel` | 198,683 | 6,272 |
-| `elephants-dream` | 459,936 | 33,232 |
+| `tears-of-steel` | 401,566 | 25,828 |
+| `big-buck-bunny` | 252,020 | 32,240 |
+| `sintel` | 198,683 | 5,454 |
+| `elephants-dream` | 459,936 | 30,092 |
 
-Total media: **1,416,989 bytes** (not fetched up front).
+Total media: **1,405,819 bytes** (not fetched up front).
 The current MP4 is fetched only when the hero is visible on a viewport wider than
 800px, reduced motion is not requested, and the browser does not report
 Save-Data or a slow (2G/3G) connection. Mobile, reduced-motion and data-saving
@@ -79,7 +94,7 @@ ffmpeg -ss 125 -i https://download.blender.org/durian/movies/Sintel.2010.1080p.m
   -c:v libx264 -preset slow -crf 30 -maxrate 400k -bufsize 800k \
   -pix_fmt yuv420p -movflags +faststart public/media/sintel-ambient.mp4
 ffmpeg -i public/media/sintel-ambient.mp4 -frames:v 1 \
-  -c:v libwebp -quality 70 public/media/sintel-poster.webp
+  -c:v libwebp -quality 62 public/media/sintel-poster.webp
 ```
 
 Product copy follows the Loom [README](https://github.com/Ebenderooock/loom#readme),
