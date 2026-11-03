@@ -2,9 +2,10 @@ import { useEffect, useState } from 'react'
 import { ArrowUpRight, Menu, X } from 'lucide-react'
 
 const navLinks = [
-  { label: 'Platform', href: '#features' },
-  { label: 'Quickstart', href: '#getting-started' },
-  { label: 'Roadmap', href: '#roadmap' },
+  { label: 'Platform', href: '/#features' },
+  { label: 'Quickstart', href: '/#getting-started' },
+  { label: 'Guides', href: '/guides/' },
+  { label: 'Roadmap', href: '/#roadmap' },
   { label: 'Docs', href: 'https://github.com/Ebenderooock/loom/tree/main/docs' },
 ]
 
@@ -22,7 +23,7 @@ export default function Navbar() {
   return (
     <header className="site-header">
       <nav className="page-shell nav-layout" aria-label="Main navigation">
-        <a href="#" className="brand-link" aria-label="Loom home"><img src="/loom-logo-64.webp" srcSet="/loom-logo-64.webp 1x, /loom-logo-128.webp 2x" width={32} height={32} alt="" />loom<span className="brand-label">MEDIA, CONNECTED.</span></a>
+        <a href="/" className="brand-link" aria-label="Loom home"><img src="/loom-logo-64.webp" srcSet="/loom-logo-64.webp 1x, /loom-logo-128.webp 2x" width={32} height={32} alt="" />loom<span className="brand-label">MEDIA, CONNECTED.</span></a>
         <button className="menu-toggle" onClick={() => setMobileOpen(!mobileOpen)} aria-expanded={mobileOpen} aria-controls="navigation-links" aria-label={mobileOpen ? 'Close menu' : 'Open menu'}>
           {mobileOpen ? <X size={23} /> : <Menu size={23} />}
         </button>

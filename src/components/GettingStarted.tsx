@@ -47,7 +47,7 @@ export default function GettingStarted() {
           <h2>Make room<br /><em>for Loom.</em></h2>
           <p>Run a container or build from source. Adjust the configuration and media paths for your server before starting.</p>
           <p className="quickstart-warning">Pre-release software. Back up existing data before testing; APIs and database schemas may change.</p>
-          <a className="text-link" href="https://github.com/Ebenderooock/loom/blob/main/docs/deployment.md">Deployment guide <ArrowUpRight size={16} /></a>
+          <a className="text-link" href="/guides/docker/">Step-by-step Docker setup <ArrowUpRight size={16} /></a>
         </div>
         <div className="install-panel">
           <div className="install-switch" aria-label="Installation method">

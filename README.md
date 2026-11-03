@@ -112,16 +112,21 @@ npm install
 npm run dev      # local dev server with HMR
 npm run lint     # ESLint
 npm run build    # type-check + production build to dist/
+npm run test:seo # check generated HTML, links, metadata and crawler files after building
 npm run preview  # preview the production build
 ```
 
 ## Search discovery and initial HTML
 
-`npm run build` renders the same React page into `dist/index.html` using
-React's server renderer and a temporary Vite SSR bundle. The bundle is removed
-after rendering; deployment is still static assets only, with no runtime server
-or additional dependencies. Production hydrates this markup; the Vite dev
-server uses client rendering. Keep render-time code safe without browser APIs,
+`npm run build` renders the home page and operator guides into individual HTML
+files using React's server renderer and a temporary Vite SSR bundle. The bundle
+is removed after rendering; deployment is still static assets only, with no
+runtime server, routing dependency or additional packages. Links use ordinary
+document navigation, so guides also work with JavaScript disabled. Production
+hydrates the selected page; the Vite dev server uses client rendering.
+Vite preview uses multi-page handling instead of falling back to the home
+page for missing URLs. Cloudflare serves the custom error page in production.
+Keep render-time code safe without browser APIs,
 and ensure the first client render matches the server snapshot. The consent
 dialog reads browser storage after hydration; hero-video eligibility already
 uses a static server snapshot. Page content, installation instructions,
@@ -129,21 +134,46 @@ screenshot and film attribution are visible without JavaScript.
 
 The canonical origin is **https://loom.deroock.co.za**, verified against the
 live HTTPS site on 2026-11-02. The custom domain is configured in Cloudflare,
-not declared in `wrangler.jsonc`; retain its existing mapping. `index.html`
-contains the title, description, canonical, Open Graph / Twitter metadata
-and JSON-LD (`WebSite`, `WebPage`, `SoftwareSourceCode`). Sharing uses the
-actual owner-approved screenshot, not a fabricated product image.
-`public/robots.txt` permits crawling and references `public/sitemap.xml`,
-which lists only the canonical home page. There are no extra landing routes.
-Unknown paths return 404 instead of duplicate home-page HTML.
+not declared in `wrangler.jsonc`; retain its existing mapping. `src/site.ts`
+is the single source for the public page registry, origin and page-specific
+titles, descriptions, canonicals, Open Graph / Twitter metadata and JSON-LD.
+The Vite HTML transform supplies metadata during development; the prerender
+step writes the correct head and body for every production page.
+Schema describes the website and source code, with `TechArticle` and
+`BreadcrumbList` for the two guides. Sharing uses the actual owner-approved
+screenshot, not a fabricated product image.
 
-When changing the domain, update the canonical, social URLs and JSON-LD in
-`index.html` plus both crawler assets together. After building, inspect the
+Public pages:
+
+| URL | Reader's task |
+|---|---|
+| `/` | Understand Loom's capabilities and pre-release status |
+| `/guides/` | Choose an operator guide |
+| `/guides/docker/` | Set up persistent Docker storage, local access, health checks and safe updates |
+| `/guides/media-downloads/` | Connect qBittorrent, align paths and troubleshoot the search-to-import workflow |
+
+Guide instructions are original explanatory content grounded in the upstream
+documentation. Their source links pin the revision that was checked; current
+reference links are included separately. Recheck the relevant implementation
+and docs when changing commands or capability claims. The Docker example is
+for an isolated local test instance, not a production-ready deployment or
+evidence of an end-to-end live download test.
+
+`scripts/prerender.mjs` generates `dist/robots.txt` and `dist/sitemap.xml` from
+the same origin and page registry. Do not maintain a second list in `public/`.
+Only canonical, indexable pages enter the sitemap. A real `dist/404.html`
+returns a useful, `noindex` error page for unknown paths rather than duplicate
+home-page HTML.
+
+When changing the domain, update `siteOrigin` in `src/site.ts`. After building, inspect the
 HTML source (not just the live DOM) for meaningful content and parse the
 JSON-LD and sitemap. Preview with JavaScript both enabled and disabled;
 check local anchors, assets, hydration, installation controls and responsive
-navigation. The source template intentionally has an empty root; only the
-production build is prerendered. Deploy `dist/`, never the source template.
+navigation. `npm run build` runs `scripts/seo.test.mjs` after prerendering and
+fails for missing page content, duplicate metadata, broken internal links,
+invalid JSON-LD, incorrect sitemap membership or indexing the error page.
+The source template intentionally has an empty root and metadata placeholder;
+only the production build is prerendered. Deploy `dist/`, never the source template.
 
 Copy targets Loom media management and download automation, not competitive
 replacement of the *arr ecosystem. Compatibility shims are described with
@@ -154,21 +184,37 @@ verification tokens or stable-release claims.
 
 ### Owner actions after deployment
 
-1. Verify ownership of `loom.deroock.co.za` in Google Search Console using its
+1. If needed, verify ownership of `loom.deroock.co.za` in Google Search Console using its
    supplied DNS TXT record in Cloudflare (or use an already verified property).
    This requires the owner's Google and DNS access; no token is bundled here.
 2. Submit `https://loom.deroock.co.za/sitemap.xml`. Use URL Inspection on
    `https://loom.deroock.co.za/`, check the rendered/crawled page and request
-   indexing. Confirm production `/robots.txt` and `/sitemap.xml` serve the
-   actual files and nonexistent paths return 404.
-3. Monitor indexing, queries and canonical selection. For Bing, verify the
+   indexing for the home page and the two new guides. Check Google's selected
+   canonical and last crawl date for each page. Confirm production `/robots.txt`
+   and `/sitemap.xml` serve the actual files and nonexistent paths return 404.
+3. Use an account with repository administration access to set the
+   `Ebenderooock/loom` and `Ebenderooock/loom-website` About-panel Website fields
+   to `https://loom.deroock.co.za/`. Relevant Loom topics include `self-hosted`,
+   `media-management`, `media-automation` and `movie-manager`. Link useful
+   guides from appropriate project documentation; avoid spam, purchased links
+   and unrelated directory submissions. Repository push access alone does
+   not grant permission to edit these settings.
+4. Monitor indexing, queries and canonical selection. For Bing, verify the
    site in Bing Webmaster Tools (or import the verified Search Console
    property) and submit the same sitemap.
 
 These changes improve crawlability and relevance, not guaranteed rankings.
 Broad “Loom” searches compete with the established video-messaging brand;
-focused self-hosted media queries are more realistic. Ranking also depends on
-indexing, useful ongoing documentation, legitimate links and search demand.
+focused self-hosted media queries are more realistic. Track branded discovery
+(`Loom media manager`), setup (`install Loom Docker`) and workflow
+(`Loom qBittorrent downloads`) queries separately from broad category terms.
+Use unfiltered Web search impressions and query/page data in Search Console,
+with its latest-data date in view; zero clicks alone does not diagnose an
+indexing failure. Record the deployment date and compare complete reporting
+periods rather than interpreting two days as a ranking verdict.
+Ranking also depends on indexing, useful ongoing documentation, legitimate
+links and search demand. Neither these guides nor requesting indexing can
+guarantee a first-page position.
 
 ## Deploy
 

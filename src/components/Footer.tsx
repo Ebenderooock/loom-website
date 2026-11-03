@@ -5,9 +5,10 @@ export default function Footer() {
     <footer className="site-footer">
       <div className="page-shell">
         <div className="footer-layout">
-          <a className="footer-brand" href="#" aria-label="Loom home"><img src="/loom-logo-64.webp" srcSet="/loom-logo-64.webp 1x, /loom-logo-128.webp 2x" width={32} height={32} alt="" />loom<span>Unified media automation</span></a>
+          <a className="footer-brand" href="/" aria-label="Loom home"><img src="/loom-logo-64.webp" srcSet="/loom-logo-64.webp 1x, /loom-logo-128.webp 2x" width={32} height={32} alt="" />loom<span>Unified media automation</span></a>
           <div className="footer-links">
-            <a href="#media-management">Media management</a>
+            <a href="/#media-management">Media management</a>
+            <a href="/guides/">Operator guides</a>
             <a href="https://github.com/Ebenderooock/loom/tree/main/docs">Documentation</a>
             <a href="https://github.com/Ebenderooock/loom">GitHub</a>
             <a href="https://github.com/Ebenderooock/loom/blob/main/LICENSE">AGPL-3.0</a>
