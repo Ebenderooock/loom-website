@@ -10,11 +10,11 @@ export default function MediaManagement() {
         <div className="feature-grid">
           <article className="feature-card">
             <h3>What is self-hosted media management?</h3>
-            <p>Run Loom on your own infrastructure to manage movie and TV metadata, quality preferences, indexers, and library organization. SQLite is the default database, with PostgreSQL support. <a className="text-link" href="#getting-started">Start with Docker or build from source.</a></p>
+            <p>Run Loom on your own infrastructure to manage movie and TV metadata, quality preferences, indexers, and library organization. SQLite is the default database, with PostgreSQL support. <a className="text-link" href="/guides/docker/">Follow the Docker Compose setup guide.</a></p>
           </article>
           <article className="feature-card">
             <h3>How does Loom automate media downloads?</h3>
-            <p>Loom searches your configured indexers, scores releases against your preferences, tracks downloads, and imports files into your library. Use the Rain sidecar torrent workflow or a supported external download client. Built-in Usenet downloading is deferred. <a className="text-link" href="https://github.com/Ebenderooock/loom/blob/main/docs/downloads.md">Read the download-client guide.</a></p>
+            <p>Loom searches your configured indexers, scores releases against your preferences, tracks downloads, and imports files into your library. Use the Rain sidecar torrent workflow or a supported external download client. Built-in Usenet downloading is deferred. <a className="text-link" href="/guides/media-downloads/">Set up downloads and troubleshoot imports.</a></p>
           </article>
           <article className="feature-card">
             <h3>Can movie torrents be used legally?</h3>
