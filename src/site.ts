@@ -1,7 +1,9 @@
 export const siteOrigin = 'https://loom.deroock.co.za'
 export const sourceRepository = 'https://github.com/Ebenderooock/loom'
+export const contactEmail = 'admin@deroock.co.za'
+export const screenshotAlt = 'Loom Movies view (pre-release UI) with a demo library of Blender Foundation open films (CC BY): application header, navigation sidebar, search and quality filters, and a poster grid.'
 
-type PageKind = 'home' | 'guides' | 'docker' | 'downloads' | 'not-found'
+type PageKind = 'home' | 'guides' | 'docker' | 'downloads' | 'privacy' | 'not-found'
 
 export interface Page {
   path: string
@@ -40,6 +42,13 @@ export const pages: readonly Page[] = [
     heading: 'From media download to organized library',
     description: 'Configure Loom media downloads with qBittorrent, shared paths and quality preferences. Diagnose search, client and import failures using media you may legally use.',
   },
+  {
+    path: '/privacy/',
+    kind: 'privacy',
+    title: 'Privacy & Cookie Policy — Loom Media Manager Website',
+    heading: 'Privacy and cookie policy',
+    description: 'How the Loom website uses Cloudflare logs, cookieless Cloudflare Web Analytics and optional Google Analytics 4 cookies, and your rights under POPIA and GDPR.',
+  },
 ]
 
 const notFound: Page = {
@@ -62,13 +71,14 @@ function escapeHtml(value: string) {
 export function renderPageHead(page: Page) {
   const url = `${siteOrigin}${page.path}`
   const image = `${siteOrigin}/loom-movies.jpg`
-  const imageAlt = 'Actual Loom Movies view with navigation, filters and a poster grid. Pre-release UI.'
+  const imageAlt = screenshotAlt
   const indexable = page.kind !== 'not-found'
   const article = page.kind === 'docker' || page.kind === 'downloads'
+  const guide = page.kind === 'guides' || article
   const breadcrumbs = [
     { name: 'Loom', item: `${siteOrigin}/` },
-    ...(page.kind !== 'home' ? [{ name: 'Guides', item: `${siteOrigin}/guides/` }] : []),
-    ...(article ? [{ name: page.heading, item: url }] : []),
+    ...(guide ? [{ name: 'Guides', item: `${siteOrigin}/guides/` }] : []),
+    ...(article || page.kind === 'privacy' ? [{ name: page.heading, item: url }] : []),
   ]
   const schema = {
     '@context': 'https://schema.org',
@@ -96,7 +106,7 @@ export function renderPageHead(page: Page) {
           primaryImageOfPage: {
             '@type': 'ImageObject',
             url: image,
-            caption: 'Actual Loom Movies view. Pre-release UI.',
+            caption: 'Loom Movies view (pre-release UI) with a demo library of Blender Foundation open films (CC BY).',
             width: 1440,
             height: 900,
           },
