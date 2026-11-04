@@ -17,7 +17,8 @@ export default function Footer() {
           </div>
         </div>
         <nav className="footer-links footer-legal" aria-label="Legal and contact">
-          <a href="/privacy/">Privacy</a>
+          <a href="/privacy/">Website privacy</a>
+          <a href="/privacy/app/">App privacy</a>
           <a
             href="/privacy/#cookies"
             onClick={event => {

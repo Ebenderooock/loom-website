@@ -5,7 +5,7 @@ import test from 'node:test'
 
 const origin = 'https://loom.deroock.co.za'
 const dist = resolve('dist')
-const paths = ['/', '/guides/', '/guides/docker/', '/guides/media-downloads/', '/privacy/']
+const paths = ['/', '/guides/', '/guides/docker/', '/guides/media-downloads/', '/privacy/', '/privacy/app/']
 const guidePaths = ['/guides/docker/', '/guides/media-downloads/']
 const documents = new Map(paths.map(path => [path, readFileSync(resolve(dist, `.${path}index.html`), 'utf8')]))
 
@@ -120,11 +120,21 @@ test('distinct content and complete discovery graph', () => {
 
 test('privacy policy covers operator, processors, consent and rights', () => {
   const html = documents.get('/privacy/')
-  for (const text of ['Eben de Roock', 'South Africa', 'Cloudflare Web Analytics', 'Google Analytics 4', '_ga', 'loom-cookie-consent', 'POPIA', 'GDPR', 'https://inforegulator.org.za', 'docs/PRIVACY.md', 'id="cookies"', 'id="contact"', 'Effective']) {
+  for (const text of ['Eben de Roock', 'South Africa', 'Cloudflare Web Analytics', 'Google Analytics 4', '_ga', 'loom-cookie-consent', 'POPIA', 'GDPR', 'https://inforegulator.org.za', 'href="/privacy/app/"', 'id="cookies"', 'id="contact"', 'Effective']) {
     assert.ok(html.includes(text), text)
   }
   const crumbs = schema(html)['@graph'].find(node => node['@type'] === 'BreadcrumbList')
   assert.deepEqual(crumbs.itemListElement.map(item => item.item), [`${origin}/`, `${origin}/privacy/`])
+})
+
+test('app privacy notice covers self-hosting, services, Loom TV and rights', () => {
+  const html = documents.get('/privacy/app/')
+  for (const text of ['self-hosted', 'data controller', 'no telemetry', 'image.tmdb.org', 'Loom TV', 'Android Keystore', 'POPIA', 'GDPR', 'mailto:admin@deroock.co.za', 'Effective']) {
+    assert.ok(html.includes(text), text)
+  }
+  assert.doesNotMatch(html, /docs\/PRIVACY\.md/)
+  const crumbs = schema(html)['@graph'].find(node => node['@type'] === 'BreadcrumbList')
+  assert.deepEqual(crumbs.itemListElement.map(item => item.item), [`${origin}/`, `${origin}/privacy/`, `${origin}/privacy/app/`])
 })
 
 test('analytics scripts follow build-time configuration and consent', () => {
