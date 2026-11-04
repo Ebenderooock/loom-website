@@ -11,6 +11,7 @@ import Footer from './components/Footer'
 import CookieConsent from './components/CookieConsent'
 import Guides from './components/Guides'
 import Privacy from './components/Privacy'
+import AppPrivacy from './components/AppPrivacy'
 import { getPage } from './site'
 
 export default function App({ pathname }: { pathname: string }) {
@@ -38,7 +39,7 @@ export default function App({ pathname }: { pathname: string }) {
             <h1>{page.heading}</h1>
             <p>This page does not exist. <a className="text-link" href="/guides/">Browse the operator guides</a> or <a className="text-link" href="/">return to Loom</a>.</p>
           </section>
-        ) : page.kind === 'privacy' ? <Privacy page={page} /> : <Guides page={page} />}
+        ) : page.kind === 'privacy' ? <Privacy page={page} /> : page.kind === 'app-privacy' ? <AppPrivacy page={page} /> : <Guides page={page} />}
       </main>
       <Footer />
       <CookieConsent />

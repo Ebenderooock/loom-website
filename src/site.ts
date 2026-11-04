@@ -3,7 +3,7 @@ export const sourceRepository = 'https://github.com/Ebenderooock/loom'
 export const contactEmail = 'admin@deroock.co.za'
 export const screenshotAlt = 'Loom Movies view (pre-release UI) with a demo library of Blender Foundation open films (CC BY): application header, navigation sidebar, search and quality filters, and a poster grid.'
 
-type PageKind = 'home' | 'guides' | 'docker' | 'downloads' | 'privacy' | 'not-found'
+type PageKind = 'home' | 'guides' | 'docker' | 'downloads' | 'privacy' | 'app-privacy' | 'not-found'
 
 export interface Page {
   path: string
@@ -49,6 +49,13 @@ export const pages: readonly Page[] = [
     heading: 'Privacy and cookie policy',
     description: 'How the Loom website uses Cloudflare logs, cookieless Cloudflare Web Analytics and optional Google Analytics 4 cookies, and your rights under POPIA and GDPR.',
   },
+  {
+    path: '/privacy/app/',
+    kind: 'app-privacy',
+    title: 'Loom App Privacy Notice — Self-Hosted Server and Loom TV',
+    heading: 'Loom app privacy notice',
+    description: 'What the self-hosted Loom server, web UI and Loom TV app store, which third-party services they contact, and who is responsible for your data.',
+  },
 ]
 
 const notFound: Page = {
@@ -78,7 +85,8 @@ export function renderPageHead(page: Page) {
   const breadcrumbs = [
     { name: 'Loom', item: `${siteOrigin}/` },
     ...(guide ? [{ name: 'Guides', item: `${siteOrigin}/guides/` }] : []),
-    ...(article || page.kind === 'privacy' ? [{ name: page.heading, item: url }] : []),
+    ...(page.kind === 'app-privacy' ? [{ name: 'Privacy', item: `${siteOrigin}/privacy/` }] : []),
+    ...(article || page.kind === 'privacy' || page.kind === 'app-privacy' ? [{ name: page.heading, item: url }] : []),
   ]
   const schema = {
     '@context': 'https://schema.org',

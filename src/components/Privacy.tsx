@@ -2,7 +2,7 @@ import { contactEmail, sourceRepository, type Page } from '../site'
 import { openCookieSettings } from '../analytics'
 
 const effectiveDate = '4 November 2026'
-const appPrivacyNotice = `${sourceRepository}/blob/main/docs/PRIVACY.md`
+const appPrivacyNotice = '/privacy/app/'
 
 function CookieSettingsLink() {
   return (

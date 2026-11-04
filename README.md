@@ -157,6 +157,7 @@ Public pages:
 | `/guides/docker/` | Set up persistent Docker storage, local access, health checks and safe updates |
 | `/guides/media-downloads/` | Connect qBittorrent, align paths and troubleshoot the search-to-import workflow |
 | `/privacy/` | Privacy and cookie policy (operator, analytics, processors, POPIA/GDPR rights, contact) |
+| `/privacy/app/` | Privacy notice for the self-hosted Loom server, web UI and Loom TV app |
 
 Guide instructions are original explanatory content grounded in the upstream
 documentation. Their source links pin the revision that was checked; current
@@ -246,6 +247,8 @@ forwarded to `zaraz.consent`. In the GA4 property, set event data retention to
 
 `/privacy/` must stay accurate whenever analytics, hosting or processors
 change: update the text and the effective date in `src/components/Privacy.tsx`.
+`/privacy/app/` (`src/components/AppPrivacy.tsx`) describes the Loom app itself;
+update it when the app's data storage, outbound services or Loom TV behaviour changes.
 Site contact (`admin@deroock.co.za`), the AGPL licence, security policy and a
 lawful-use statement are linked in the footer on every page.
 
