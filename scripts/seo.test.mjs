@@ -5,7 +5,8 @@ import test from 'node:test'
 
 const origin = 'https://loom.deroock.co.za'
 const dist = resolve('dist')
-const paths = ['/', '/guides/', '/guides/docker/', '/guides/media-downloads/']
+const paths = ['/', '/guides/', '/guides/docker/', '/guides/media-downloads/', '/privacy/']
+const guidePaths = ['/guides/docker/', '/guides/media-downloads/']
 const documents = new Map(paths.map(path => [path, readFileSync(resolve(dist, `.${path}index.html`), 'utf8')]))
 
 function attribute(tag, name) {
@@ -80,7 +81,7 @@ for (const [path, html] of documents) {
     assert.equal(ids.length, new Set(ids).size, 'duplicate element IDs')
     for (const [tag] of html.matchAll(/<(?:a|link|script|img|source)\b[^>]*>/g)) {
       const value = attribute(tag, 'href') ?? attribute(tag, 'src')
-      if (!value || /^(https?:)?\/\//.test(value)) continue
+      if (!value || /^((https?:)?\/\/|mailto:)/.test(value)) continue
       const url = new URL(value, `${origin}${path}`)
       let destination
       if (url.pathname.endsWith('/')) {
@@ -99,7 +100,12 @@ for (const [path, html] of documents) {
 test('distinct content and complete discovery graph', () => {
   assert.equal(new Set([...documents.values()].map(html => html.match(/<title>(.*?)<\/title>/)[1])).size, paths.length)
   assert.equal(new Set([...documents.values()].map(html => meta(html, 'description')[0])).size, paths.length)
-  for (const path of paths.slice(1)) assert.ok(documents.get('/guides/').includes(`href="${path}"`))
+  for (const path of guidePaths) assert.ok(documents.get('/guides/').includes(`href="${path}"`))
+  for (const html of documents.values()) {
+    assert.match(html, /href="\/privacy\/"/)
+    assert.match(html, /mailto:admin@deroock\.co\.za/)
+    assert.match(html, /Not affiliated with Loom, Inc\./)
+  }
   assert.match(documents.get('/'), /href="\/guides\/docker\/"/)
   assert.match(documents.get('/'), /href="\/guides\/media-downloads\/"/)
   const docker = documents.get('/guides/docker/')
@@ -110,6 +116,23 @@ test('distinct content and complete discovery graph', () => {
   for (const text of ['qbittorrent', 'Rain sidecar', 'remote path mapping', 'same filesystem', 'no-op client', 'Diagnose the stage that failed', 'grants no rights']) {
     assert.ok(downloads.includes(text), text)
   }
+})
+
+test('privacy policy covers operator, processors, consent and rights', () => {
+  const html = documents.get('/privacy/')
+  for (const text of ['Eben de Roock', 'South Africa', 'Cloudflare Web Analytics', 'Google Analytics 4', '_ga', 'loom-cookie-consent', 'POPIA', 'GDPR', 'https://inforegulator.org.za', 'docs/PRIVACY.md', 'id="cookies"', 'id="contact"', 'Effective']) {
+    assert.ok(html.includes(text), text)
+  }
+  const crumbs = schema(html)['@graph'].find(node => node['@type'] === 'BreadcrumbList')
+  assert.deepEqual(crumbs.itemListElement.map(item => item.item), [`${origin}/`, `${origin}/privacy/`])
+})
+
+test('analytics scripts follow build-time configuration and consent', () => {
+  const html = documents.get('/')
+  assert.doesNotMatch(html, /googletagmanager\.com/, 'gtag.js must not be in the initial HTML')
+  const beacon = /static\.cloudflareinsights\.com\/beacon\.min\.js/
+  if (process.env.VITE_CF_WEB_ANALYTICS_TOKEN) assert.match(html, beacon)
+  else assert.doesNotMatch(html, beacon)
 })
 
 test('generated sitemap and robots include exactly the indexable pages', () => {

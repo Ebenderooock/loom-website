@@ -38,6 +38,11 @@ jobs:
 
       - name: Build
         run: npm run build
+        env:
+          # Optional repository variables (Settings → Secrets and variables →
+          # Actions → Variables). Leave unset to disable each analytics tool.
+          VITE_CF_WEB_ANALYTICS_TOKEN: ${{ vars.VITE_CF_WEB_ANALYTICS_TOKEN }}
+          VITE_GA_MEASUREMENT_ID: ${{ vars.VITE_GA_MEASUREMENT_ID }}
 
       - name: Deploy to Cloudflare Workers
         uses: cloudflare/wrangler-action@v3

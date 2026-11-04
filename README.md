@@ -44,6 +44,11 @@ CC BY licences independently of the site's code.
 Do not substitute commercial movie/TV clips: a short excerpt alone does not
 establish permission.
 
+The hero screenshot shows the real Loom UI populated with a demo library of
+Blender Foundation open films (CC BY; poster images via Wikimedia Commons).
+Their poster credits, years and licence versions are listed in the footer from `demoLibraryFilms` in `backgroundClips.ts`; keep that list in sync
+with the posters visible in the screenshot.
+
 | Film | Required attribution | Verified licence | Official source | Excerpt |
 |---|---|---|---|---|
 | Tears of Steel | (CC) Blender Foundation \| mango.blender.org | [CC BY 3.0 — project terms](https://mango.blender.org/sharing/) | [720p MOV](https://download.blender.org/demo/movies/ToS/tears_of_steel_720p.mov) | 00:35–00:45 |
@@ -151,6 +156,7 @@ Public pages:
 | `/guides/` | Choose an operator guide |
 | `/guides/docker/` | Set up persistent Docker storage, local access, health checks and safe updates |
 | `/guides/media-downloads/` | Connect qBittorrent, align paths and troubleshoot the search-to-import workflow |
+| `/privacy/` | Privacy and cookie policy (operator, analytics, processors, POPIA/GDPR rights, contact) |
 
 Guide instructions are original explanatory content grounded in the upstream
 documentation. Their source links pin the revision that was checked; current
@@ -216,12 +222,42 @@ Ranking also depends on indexing, useful ongoing documentation, legitimate
 links and search demand. Neither these guides nor requesting indexing can
 guarantee a first-page position.
 
+## Analytics, consent and legal pages
+
+Both analytics tools are optional and configured at **build time** through
+Vite environment variables (see [`.env.example`](.env.example)). They are
+public identifiers, not secrets, but never commit real values; use
+`.env.local` locally or GitHub repository *variables* in CI (the deploy
+workflow passes them to `npm run build`). They are not Wrangler runtime vars,
+because the site is static assets only.
+
+| Variable | Effect when set | When unset |
+|---|---|---|
+| `VITE_CF_WEB_ANALYTICS_TOKEN` | Adds the cookieless Cloudflare Web Analytics beacon to every prerendered page. No consent needed. | No beacon. |
+| `VITE_GA_MEASUREMENT_ID` (`G-…`) | Shows the consent banner. Google Analytics 4 loads only after “Accept analytics”, using Consent Mode v2 (all four signals default to `denied`; only `analytics_storage` is granted; Google signals and ad personalisation off; cookies expire after ~13 months). | GA never loads and no banner is shown (unless Cloudflare Zaraz consent is present on the zone). |
+
+The visitor's choice is stored in `localStorage` (`loom-cookie-consent`).
+“Cookie settings” in the footer reopens the banner; rejecting or withdrawing
+sets `analytics_storage` to `denied`, disables the tag and deletes `_ga*`
+cookies. Navigation uses full page loads, so GA's `config` call sends one
+`page_view` per page. If Cloudflare Zaraz is enabled, the same choice is
+forwarded to `zaraz.consent`. In the GA4 property, set event data retention to
+14 months or less to match the privacy policy, and keep Google signals off.
+
+`/privacy/` must stay accurate whenever analytics, hosting or processors
+change: update the text and the effective date in `src/components/Privacy.tsx`.
+Site contact (`admin@deroock.co.za`), the AGPL licence, security policy and a
+lawful-use statement are linked in the footer on every page.
+
 ## Deploy
 
 Deployment is automated: every push to `main` runs
 [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml), which builds the
 site and publishes it to Cloudflare via `wrangler deploy`
 (project `wispy-wind-1fb6`, see [`wrangler.jsonc`](wrangler.jsonc)).
+
+Optional repository variables: `VITE_CF_WEB_ANALYTICS_TOKEN` and
+`VITE_GA_MEASUREMENT_ID` (see above).
 
 Required repository secrets:
 

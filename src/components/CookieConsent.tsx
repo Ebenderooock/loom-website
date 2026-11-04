@@ -1,69 +1,62 @@
 import { useEffect, useState, useSyncExternalStore } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Cookie, X } from 'lucide-react'
+import {
+  CONSENT_CHANGE_EVENT,
+  CONSENT_STORAGE_KEY,
+  OPEN_COOKIE_SETTINGS_EVENT,
+  applyConsent,
+  consentRequired,
+  readConsent,
+  storeConsent,
+  type ConsentChoice,
+} from '../analytics'
 
-const STORAGE_KEY = 'loom-cookie-consent'
+type Snapshot = ConsentChoice | 'pending' | 'not-required'
 
-type Choice = 'accepted' | 'declined'
-
-// Cloudflare Zaraz consent API (present only when Zaraz is enabled on the zone).
-type ZarazConsent = {
-  setAll?: (granted: boolean) => void
-  sendQueuedEvents?: () => void
-}
-
-declare global {
-  interface Window {
-    zaraz?: { consent?: ZarazConsent }
-  }
-}
-
-function applyZarazConsent(granted: boolean) {
-  const consent = window.zaraz?.consent
-  if (!consent) return
-  try {
-    consent.setAll?.(granted)
-    if (granted) consent.sendQueuedEvents?.()
-  } catch {
-    /* Zaraz not fully initialised — safe to ignore */
-  }
-}
-
-function readStoredChoice(): Choice | null {
-  try {
-    const stored = localStorage.getItem(STORAGE_KEY)
-    if (stored === 'accepted' || stored === 'declined') return stored
-  } catch {
-    /* storage blocked (private mode) — treat as no choice yet */
-  }
-  return null
+function getSnapshot(): Snapshot {
+  if (!consentRequired()) return 'not-required'
+  return readConsent() ?? 'pending'
 }
 
 function subscribe(onChange: () => void) {
-  window.addEventListener('storage', onChange)
-  return () => window.removeEventListener('storage', onChange)
+  const onStorage = (event: StorageEvent) => {
+    if (event.key === null || event.key === CONSENT_STORAGE_KEY) onChange()
+  }
+  window.addEventListener('storage', onStorage)
+  window.addEventListener(CONSENT_CHANGE_EVENT, onChange)
+  return () => {
+    window.removeEventListener('storage', onStorage)
+    window.removeEventListener(CONSENT_CHANGE_EVENT, onChange)
+  }
 }
 
+const buttonBase = 'flex-1 rounded-lg border px-4 py-2 text-sm font-semibold transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-brand-purple focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-950'
+const choiceButton = `${buttonBase} border-zinc-600 bg-zinc-800/60 text-white hover:bg-zinc-700`
+
 export default function CookieConsent() {
-  // Storage is browser-only; omit the dialog until after hydration.
-  const storedChoice = useSyncExternalStore(subscribe, readStoredChoice, () => undefined)
-  const [decision, setDecision] = useState<Choice | null>(null)
-  const choice = decision ?? storedChoice
+  // Storage and Zaraz are browser-only; render nothing until after hydration.
+  const state = useSyncExternalStore(subscribe, getSnapshot, () => 'not-required' as Snapshot)
+  const [settingsOpen, setSettingsOpen] = useState(false)
 
   useEffect(() => {
-    if (choice) applyZarazConsent(choice === 'accepted')
-  }, [choice])
+    if (state === 'accepted' || state === 'declined') applyConsent(state)
+  }, [state])
 
-  const decide = (next: Choice) => {
-    try {
-      localStorage.setItem(STORAGE_KEY, next)
-    } catch {
-      /* ignore persistence failure */
-    }
-    setDecision(next)
+  useEffect(() => {
+    const open = () => setSettingsOpen(true)
+    window.addEventListener(OPEN_COOKIE_SETTINGS_EVENT, open)
+    return () => window.removeEventListener(OPEN_COOKIE_SETTINGS_EVENT, open)
+  }, [])
+
+  const decide = (next: ConsentChoice) => {
+    storeConsent(next)
+    applyConsent(next)
+    setSettingsOpen(false)
   }
 
-  const visible = choice === null
+  const visible = state === 'pending' || settingsOpen
+  const optional = state !== 'not-required'
 
   return (
     <AnimatePresence>
@@ -85,43 +78,53 @@ export default function CookieConsent() {
                 <Cookie size={18} className="text-brand-purple" aria-hidden="true" />
               </div>
               <div className="min-w-0 flex-1">
-                <h2
-                  id="cookie-consent-title"
-                  className="text-sm font-semibold text-white"
-                >
-                  We value your privacy
+                <h2 id="cookie-consent-title" className="text-sm font-semibold text-white">
+                  {optional ? 'Allow analytics cookies?' : 'Cookie settings'}
                 </h2>
-                <p
-                  id="cookie-consent-desc"
-                  className="mt-1 text-xs leading-relaxed text-zinc-400"
-                >
-                  Loom uses privacy-friendly analytics to understand how the site
-                  is used. You can accept or decline — your choice is remembered.
-                </p>
+                <div id="cookie-consent-desc" className="mt-1 space-y-2 text-xs leading-relaxed text-zinc-400">
+                  {optional ? (
+                    <>
+                      <p>
+                        With your permission, we use Google Analytics 4 (provided by Google) to
+                        collect aggregate usage statistics, such as which pages are visited. It sets
+                        the <code>_ga</code> and <code>_ga_&lt;ID&gt;</code> cookies, which expire after
+                        about 13 months. Ad features and Google signals are off.
+                      </p>
+                      <p>
+                        Rejecting does not affect the site. Cookieless Cloudflare statistics are always
+                        on. {state === 'accepted' ? 'You currently allow analytics.' : state === 'declined' ? 'You currently reject analytics.' : ''}{' '}
+                        <a className="underline hover:text-white" href="/privacy/">Privacy policy</a>
+                      </p>
+                    </>
+                  ) : (
+                    <p>
+                      This site does not set optional cookies. It only uses cookieless, aggregate
+                      Cloudflare statistics. <a className="underline hover:text-white" href="/privacy/">Privacy policy</a>
+                    </p>
+                  )}
+                </div>
               </div>
-              <button
-                onClick={() => decide('declined')}
-                aria-label="Decline and dismiss"
-                className="shrink-0 text-zinc-500 hover:text-white transition-colors focus-visible:ring-2 focus-visible:ring-brand-purple focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-950 rounded"
-              >
-                <X size={16} aria-hidden="true" />
-              </button>
+              {(!optional || state !== 'pending') && (
+                <button
+                  onClick={() => setSettingsOpen(false)}
+                  aria-label="Close cookie settings"
+                  className="shrink-0 text-zinc-500 hover:text-white transition-colors focus-visible:ring-2 focus-visible:ring-brand-purple focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-950 rounded"
+                >
+                  <X size={16} aria-hidden="true" />
+                </button>
+              )}
             </div>
 
-            <div className="mt-4 flex items-center gap-2.5">
-              <button
-                onClick={() => decide('accepted')}
-                className="flex-1 rounded-lg bg-brand-purple px-4 py-2 text-sm font-semibold text-zinc-950 transition-colors duration-200 hover:bg-brand-purple/90 focus-visible:ring-2 focus-visible:ring-brand-purple focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-950"
-              >
-                Accept
-              </button>
-              <button
-                onClick={() => decide('declined')}
-                className="flex-1 rounded-lg border border-zinc-700 bg-zinc-800/40 px-4 py-2 text-sm font-medium text-zinc-300 transition-all duration-200 hover:bg-zinc-800 hover:text-white focus-visible:ring-2 focus-visible:ring-brand-purple focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-950"
-              >
-                Decline
-              </button>
-            </div>
+            {optional && (
+              <div className="mt-4 flex items-center gap-2.5">
+                <button onClick={() => decide('accepted')} aria-pressed={state === 'accepted'} className={choiceButton}>
+                  Accept analytics
+                </button>
+                <button onClick={() => decide('declined')} aria-pressed={state === 'declined'} className={choiceButton}>
+                  Reject
+                </button>
+              </div>
+            )}
           </div>
         </motion.div>
       )}

@@ -164,7 +164,9 @@ html { scroll-behavior: smooth; scroll-padding-top: 100px; }
 .footer-brand span { margin-left: 10px; color: var(--muted); font-size: 10px; font-weight: 400; }
 .footer-links { display: flex; gap: 22px; flex-wrap: wrap; color: var(--muted); font-size: 11px; }
 .footer-links a:hover { color: var(--paper); }
+.footer-legal { margin-top: 22px; }
 .footer-note { margin-top: 25px; font-family: var(--mono); font-size: 9px; color: var(--muted); }
+.footer-legal-note { margin-top: 8px; }
 .media-credit { margin-top: 12px; color: var(--muted); font-size: 10px; line-height: 1.8; }
 .media-credit a { text-decoration: underline; }
 .glass, .surface-card { background: #171a28; border: 1px solid #3c3b50; }
