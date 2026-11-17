@@ -118,6 +118,14 @@ test('distinct content and complete discovery graph', () => {
   }
 })
 
+test('homepage invites testers to share feedback and report bugs', () => {
+  const html = documents.get('/')
+  assert.match(html, /looking for people to try Loom/)
+  assert.match(html, /href="https:\/\/github\.com\/Ebenderooock\/loom\/discussions">Share feedback or ask a question<\/a>/)
+  assert.match(html, /href="https:\/\/github\.com\/Ebenderooock\/loom\/issues\/new\?template=bug\.yml">Report a reproducible bug<\/a>/)
+  assert.match(html, /href="#getting-started" class="button-primary">Run Loom/)
+})
+
 test('privacy policy covers operator, processors, consent and rights', () => {
   const html = documents.get('/privacy/')
   for (const text of ['Eben de Roock', 'South Africa', 'Cloudflare Web Analytics', 'Google Analytics 4', '_ga', 'loom-cookie-consent', 'POPIA', 'GDPR', 'https://inforegulator.org.za', 'href="/privacy/app/"', 'id="cookies"', 'id="contact"', 'Effective']) {
