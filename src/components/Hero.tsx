@@ -29,6 +29,11 @@ export default function Hero() {
                 <BookOpen size={17} /> Read the docs
               </a>
             </div>
+            <p className="hero-testing">
+              We&apos;re looking for people to try Loom on their own setups and share feedback.
+              {' '}<a href="https://github.com/Ebenderooock/loom/discussions">Share feedback or ask a question</a>
+              {' '}· <a href="https://github.com/Ebenderooock/loom/issues/new?template=bug.yml">Report a reproducible bug</a>
+            </p>
             <p className="hero-footnote">One Go binary. One database. Your infrastructure.</p>
           </div>
 

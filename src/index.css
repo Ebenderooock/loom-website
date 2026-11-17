@@ -87,6 +87,9 @@ html { scroll-behavior: smooth; scroll-padding-top: 100px; }
 .button-primary:hover { background: #cebefb; border-color: #cebefb; }
 .button-secondary { border: 1px solid #3b3e50; color: var(--paper); }
 .button-secondary:hover { background: #1c1e2d; border-color: #77718d; }
+.hero-testing { margin-top: 24px; max-width: 420px; color: var(--muted); font-size: 13px; line-height: 1.8; }
+.hero-testing a { color: var(--lavender); text-decoration: underline; }
+.hero-testing a:hover { color: var(--paper); }
 .hero-footnote { margin-top: 22px; color: #9a9daf; font-size: 11px; }
 .hero-bottomline { border-top: 1px solid var(--line); padding-block: 21px; font-family: var(--mono); font-size: 9px; color: var(--muted); letter-spacing: .03em; }
 .hero-bottomline a { display: flex; align-items: center; gap: 10px; color: var(--paper); }
